@@ -8,33 +8,42 @@ import os
 import locale
 
 
+def hex_to_rgb(h:str, text:str) -> str:  
+    h = h.lstrip("#")
 
-def on_error() -> None:
-    pass
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+    return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
 
 
-def localisation(section:str, key:str, forced_en:bool = False) -> str:
+def localisation(section:str, key:str, forced_lang:str = None) -> str:
     locale.setlocale(locale.LC_ALL, "")
     lang = locale.getlocale()
 
     #print(lang)  
-
+    locale_file = {
+                "ru": os.path.join(DATA_PATH, "local_ru.ini"),
+                "en": os.path.join(DATA_PATH, "local_en.ini")
+                }
     try:
         config = ConfigParser()
-        if forced_en:
-            config.read(os.path.join(DATA_PATH, "local_en.ini"), encoding="utf-8")
+
+
+        if forced_lang:
+            if forced_lang == 'ru':
+                config.read(locale_file['ru'], encoding="utf-8")
+            elif forced_lang == 'en': 
+                config.read(locale_file['en'], encoding="utf-8")
+            else: 
+                config.read(locale_file['en'], encoding="utf-8")
+            
 
         else:
             if "Russian_Russia" in lang:
-                config.read(
-                            os.path.join(DATA_PATH, "local_ru.ini"), 
-                            encoding="utf-8"
-                        )
+                config.read(locale_file['ru'], encoding="utf-8")
             else:
-                config.read(
-                            os.path.join(DATA_PATH, "local_en.ini"), 
-                            encoding="utf-8"
-                        )
+                config.read(locale_file['en'], encoding="utf-8")
+
 
         return config.get(section, key, fallback = "...")
     except:return '...'
@@ -85,3 +94,5 @@ if __name__ == "__main__":
     print('----------------------------------')
 
     print( get_config('config.ini', 'General', 'animations', 'bool') )    
+
+    print( hex_to_rgb("#A82623", "Hi!") )

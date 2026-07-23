@@ -1,9 +1,10 @@
 from .req import *
 from .tui import *
-from .hq  import localisation, clear_screen
+from .hq  import *
 
 
 clear_screen()
+
 
 def start_game() -> None:
     clear_screen()
@@ -23,8 +24,11 @@ def on_nothing() -> None:
 
 
 def main() -> None:
-    print(LOGO)
-    csprint("By - Wl13Proger9\n")
+    colored_logo = LOGO.replace("█",hex_to_rgb("#A82623", "█"))         #front
+    colored_logo = colored_logo.replace("▒",hex_to_rgb("#701715", "▒")) #bg
+    
+    print(colored_logo)
+    csprint("От - Wl13Proger9\n")
 
 
     m = menu(
