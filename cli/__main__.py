@@ -1,12 +1,13 @@
 from .req import *
 from .tui import *
+from .hq  import localisation, clear_screen
 
-#SSss134
 
-os.system('cls')
+clear_screen()
 
 def start_game() -> None:
-    print("Запуск")
+    clear_screen()
+    input("Запуск")
 
 
 def params() -> None:
